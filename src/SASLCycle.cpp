@@ -27,14 +27,13 @@
 //xplm
 #include <XPLMPlugin.h>
 #include <XPLMProcessing.h>
-#include <XPLMUtilities.h>
+//#include <XPLMUtilities.h>
 
 //FLCBs
 float runOnceAtStartup ( float, float, int, void * );
 float onAircraftLoad ( float, float, int, void * );
 
-const char saslSig[] = "Dozer.systime"; //for testing
-//const char saslSig[] = "1-sim.sasl"; //signature of SASL plugin
+const char saslSig[] = "1-sim.sasl"; //signature of SASL plugin
 XPLMPluginID saslID = 0;
 
 bool saslFound = 0;
@@ -68,7 +67,7 @@ PLUGIN_API int XPluginEnable(void) { return 1; }
 PLUGIN_API void XPluginReceiveMessage(XPLMPluginID, long msg, void *){
     if (msg == XPLM_MSG_PLANE_LOADED) {
         XPLMSetFlightLoopCallbackInterval(onAircraftLoad, -1, 1, 0);
-        XPLMSpeakString("Aircraft loaded");
+        //XPLMSpeakString("Aircraft loaded");
     }
 }
 
@@ -76,11 +75,11 @@ float runOnceAtStartup(float, float, int, void *) {
     saslID = XPLMFindPluginBySignature(saslSig);
 
     if (saslID != XPLM_NO_PLUGIN_ID) {
-        XPLMSpeakString ("SASL found");
+        //XPLMSpeakString ("SASL found");
         saslFound = 1;
 
     } else {
-        XPLMSpeakString("SASL not found");
+        //XPLMSpeakString("SASL not found");
     }
 
     return 0;
@@ -90,11 +89,11 @@ float onAircraftLoad(float, float, int, void *) {
     if(saslFound) {
         if(XPLMIsPluginEnabled(saslID)) {
             XPLMDisablePlugin(saslID);
-            XPLMSpeakString("Disable");
+            //XPLMSpeakString("Disable");
             return 1.0; //call again in 1 second
         } else {
             XPLMEnablePlugin(saslID);
-            XPLMSpeakString("Enable");
+            //XPLMSpeakString("Enable");
             return 0;
         }
     }
