@@ -13,3 +13,5 @@
 
 #QT config
 *.pro.user
+
+_msvc/*
