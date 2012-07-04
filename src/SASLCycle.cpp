@@ -27,6 +27,7 @@
 //xplm
 #include <XPLMPlugin.h>
 #include <XPLMProcessing.h>
+#include <XPLMUtilities.h>
 
 //FLCBs
 float runOnceAtStartup ( float, float, int, void * );
@@ -67,6 +68,7 @@ PLUGIN_API int XPluginEnable(void) { return 1; }
 PLUGIN_API void XPluginReceiveMessage(XPLMPluginID, long msg, void *){
     if (msg == XPLM_MSG_PLANE_LOADED) {
         XPLMSetFlightLoopCallbackInterval(onAircraftLoad, -1, 1, 0);
+        XPLMSpeakString("Aircraft loaded");
     }
 }
 
@@ -74,8 +76,13 @@ float runOnceAtStartup(float, float, int, void *) {
     saslID = XPLMFindPluginByPath(saslSig);
 
     if (saslID != XPLM_NO_PLUGIN_ID) {
+        XPLMSpeakString ("SASL found");
         saslFound = 1;
+
+    } else {
+        XPLMSpeakString("SASL not found");
     }
+
     return 0;
 }
 
@@ -83,9 +90,11 @@ float onAircraftLoad(float, float, int, void *) {
     if(saslFound) {
         if(XPLMIsPluginEnabled(saslID)) {
             XPLMDisablePlugin(saslID);
-            return 1.0; //call again in 1 second
+            XPLMSpeakString("Disable");
+            return 15.0; //call again in 1 second
         } else {
             XPLMEnablePlugin(saslID);
+            XPLMSpeakString("Enable");
             return 0;
         }
     }
