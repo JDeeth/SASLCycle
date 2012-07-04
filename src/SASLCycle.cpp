@@ -73,7 +73,7 @@ PLUGIN_API void XPluginReceiveMessage(XPLMPluginID, long msg, void *){
 }
 
 float runOnceAtStartup(float, float, int, void *) {
-    saslID = XPLMFindPluginByPath(saslSig);
+    saslID = XPLMFindPluginBySignature(saslSig);
 
     if (saslID != XPLM_NO_PLUGIN_ID) {
         XPLMSpeakString ("SASL found");
@@ -91,7 +91,7 @@ float onAircraftLoad(float, float, int, void *) {
         if(XPLMIsPluginEnabled(saslID)) {
             XPLMDisablePlugin(saslID);
             XPLMSpeakString("Disable");
-            return 15.0; //call again in 1 second
+            return 1.0; //call again in 1 second
         } else {
             XPLMEnablePlugin(saslID);
             XPLMSpeakString("Enable");
