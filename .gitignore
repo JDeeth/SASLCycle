@@ -15,3 +15,4 @@
 *.pro.user
 
 _msvc/*
+*.xpl
